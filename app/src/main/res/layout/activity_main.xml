@@ -23,38 +23,36 @@
         android:id="@+id/Subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Coding Assignment"
+        android:text="@string/subtitleMain"
         app:layout_constraintBottom_toTopOf="@+id/TitleDivLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        android:paddingBottom="10dp"
         app:layout_constraintTop_toBottomOf="@+id/TitleImage" />
 
     <View
         android:id="@+id/TitleDivLine"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginBottom="10dp"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
         app:layout_constraintTop_toBottomOf="@+id/Subtitle" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView3"
         android:layout_width="match_parent"
         android:layout_height="420dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="0dp"
         app:layout_constraintBottom_toTopOf="@+id/Footer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TitleDivLine"
         tools:itemCount="5"
         tools:listitem="@layout/item_collection_view" />
 
@@ -76,7 +74,7 @@
         android:id="@+id/FooterText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Made by: \n Sahid Emmanuel Rosas Maas"
+        android:text="@string/footerText"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/Footer"
@@ -91,8 +89,8 @@
         android:layout_height="30dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
-        android:scaleType="fitXY"
         android:background="@null"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/reload" />

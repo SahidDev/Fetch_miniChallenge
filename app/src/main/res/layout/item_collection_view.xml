@@ -9,25 +9,40 @@
         android:id="@+id/IdTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@+id/templateText"
+        android:text="x"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/templateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="ID Number" />
+        android:text="ID Number: "
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
     <View
         android:id="@+id/SubIndexDiv"
         android:layout_width="100dp"
         android:layout_height="1dp"
         android:layout_below="@+id/IdTextView"
-        android:layout_alignStart="@+id/IdTextView"
+        android:layout_alignStart="@+id/templateText"
         android:layout_alignEnd="@+id/IdTextView"
         android:layout_marginTop="10dp"
         android:background="@android:color/darker_gray" />
 
     <LinearLayout
-        android:orientation="vertical"
         android:id="@+id/ItemsLinearView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/SubIndexDiv"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="vertical"
         tools:listitem="@layout/item_card" />
 </RelativeLayout>

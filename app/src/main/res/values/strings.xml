@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Fetchy App</string>
+    <string name="subtitleMain">Coding Assignment</string>
+    <string name="footerText">Made by: \n Sahid Emmanuel Rosas Maas</string>
 </resources>

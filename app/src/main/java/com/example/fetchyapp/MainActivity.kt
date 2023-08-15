@@ -1,12 +1,10 @@
 package com.example.fetchyapp
 
-import android.app.ProgressDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fetchyapp.databinding.ActivityMainBinding
@@ -22,8 +20,6 @@ import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
-
-    var itemsArray: ArrayList<Item> = arrayListOf<Item>()
     var itemCollectionsMap = HashMap<Int, ItemCollection>()
     var itemCollectionArray = arrayListOf<ItemCollection>()
     var mainHandler: Handler = Handler()
@@ -31,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.dark_purple)
         supportActionBar?.hide()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -40,12 +37,11 @@ class MainActivity : AppCompatActivity() {
         recycler.adapter = ItemsViewAdapter(applicationContext, itemCollectionArray)
 
         binding.reloadData.setOnClickListener(View.OnClickListener() {
+            itemCollectionArray.clear()
             dataFetcher().start()
             binding.recyclerView3.adapter?.notifyDataSetChanged()
             recycler.adapter = ItemsViewAdapter(applicationContext, itemCollectionArray)
-            //Log.d("Size", itemCollectionArray.size.toString())
         })
-        //Log.d("Size", itemCollectionArray.size.toString())
     }
 
     inner class dataFetcher: Thread() {
@@ -56,50 +52,40 @@ class MainActivity : AppCompatActivity() {
             super.run()
 
             try {
-                var url: URL = URL("https://fetch-hiring.s3.amazonaws.com/hiring.json")
-                var httpUrlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-                var inputStream: InputStream = httpUrlConnection.inputStream
-                var bufferedReader: BufferedReader = BufferedReader(InputStreamReader(inputStream))
+                val url: URL = URL("https://fetch-hiring.s3.amazonaws.com/hiring.json")
+                val httpUrlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+                val inputStream: InputStream = httpUrlConnection.inputStream
+                val bufferedReader: BufferedReader = BufferedReader(InputStreamReader(inputStream))
                 var line: String? = ""
                 while (line != null){
                     line = bufferedReader.readLine()
-                    data = data + line
+                    data += line
                 }
 
                 if(data.isNotEmpty()){
-                    //var jsonObject: JSONObject = JSONObject(data)
                     var jsonItems: JSONArray =  JSONArray(data)
-                    itemsArray.clear()
-                    for (i in 0..jsonItems!!.length() - 1) {
-                        var jsonItem :JSONObject = jsonItems.getJSONObject(i)
-                        var itemName: String = jsonItem.getString("name")
+                    itemCollectionArray.clear()
+                    itemCollectionsMap.clear()
+                    for (i in 0 until jsonItems.length()) {
+                        val jsonItem :JSONObject = jsonItems.getJSONObject(i)
+                        val itemName: String = jsonItem.getString("name")
 
                         if(itemName != "" && itemName!="null"){
 
-                            var itemID: Int = jsonItem.getInt("id")
-                            var itemListID: Int = jsonItem.getInt("listId")
-                            var item: Item = Item(id = itemID, name = itemName, listId = itemListID )
-                            itemsArray.add(item)
-                            /*
-                            Log.d("Name: ", itemName)
-                            Log.d("id: ", itemID.toString())
-                            Log.d("id: ", itemListID.toString())*/
+                            val itemID: Int = jsonItem.getInt("id")
+                            val itemListID: Int = jsonItem.getInt("listId")
+                            val item: Item = Item(id = itemID, name = itemName, listId = itemListID )
 
                             if(itemCollectionsMap.containsKey(itemListID)){
                                 itemCollectionsMap[itemListID]?.addItem(item)
                             }else{
-                                var newItemCollection: ItemCollection = ItemCollection(id=itemListID, items= arrayListOf(item))
+                                val newItemCollection: ItemCollection = ItemCollection(id=itemListID, items= arrayListOf(item))
                                 itemCollectionsMap[itemListID] = newItemCollection
                             }
                         }
                     }
 
                     itemCollectionArray = ArrayList(itemCollectionsMap.values)
-                    /*Log.d("SIZE", itemCollectionArray.size.toString())
-                    for (i in 0..itemCollectionArray.size - 1){
-                            Log.d("itemCollection: ", itemCollectionArray[i].getIdText())
-                            Log.d("SIZE", itemCollectionArray[i].getSizeofItemList().toString())
-                    }*/
                 }
             }catch (e: MalformedURLException){
                 println(e.stackTrace)
@@ -110,7 +96,7 @@ class MainActivity : AppCompatActivity() {
             synchronized(itemCollectionArray) {
                 itemCollectionArray = ArrayList(itemCollectionsMap.values)
                 for (i in 0..itemCollectionArray.size - 1) {
-                    var sortedList = ArrayList<Item>(itemCollectionArray[i].getItems().sortedWith(compareBy({ it.id })))
+                    val sortedList = ArrayList<Item>(itemCollectionArray[i].getItems().sortedWith(compareBy({ it.id })))
                     itemCollectionArray[i].setItemList(sortedList)
                 }
 
